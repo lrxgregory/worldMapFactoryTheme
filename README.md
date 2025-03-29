@@ -1,4 +1,4 @@
-# Dawn
+# worldMapFactoryTheme
 
 [![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
@@ -97,5 +97,4 @@ Ensure that you follow the list of [theme store requirements](https://shopify.de
 ## License
 
 Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
-# worldMapFactoryTheme
-# worldMapFactoryTheme
+
