@@ -1,0 +1,122 @@
+<div id="ColorSettings" class="bg-white overflow-hidden">
+  <h3
+    onclick="toggleDropdown('color-settings-content', 'color-settings-icon')"
+    class="text-lg font-semibold cursor-pointer flex items-center justify-between pb-4"
+  >
+    <span class="flex items-center gap-2">
+      {{ 'Colors' | t }}
+    </span>
+    <span id="color-settings-icon" class="transform transition-transform duration-200">
+      {% render 'chevron-up', class: 'w-5 h-5 text-gray-400' %}
+    </span>
+  </h3>
+
+  <div id="color-settings-content" class="space-y-4 py-2 ">
+    <!-- Ocean Color -->
+    <div class="flex items-center justify-between py-2">
+      <label class="text-gray-800 min-w-[140px] mr-2">Ocean color</label>
+      <div class="flex items-center gap-3">
+        <div class="relative h-12 w-12">
+          <div
+            id="oceanColorBox"
+            class="h-full w-full cursor-pointer rounded-lg border border-gray-200 transition-all hover:ring-2 hover:ring-blue-500"
+          ></div>
+          <input
+            type="color"
+            id="oceanColorPicker"
+            value="#091C2A"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+          >
+        </div>
+        <input
+          type="text"
+          id="oceanColorText"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          value="#091C2A"
+          spellcheck="false"
+        >
+      </div>
+    </div>
+
+    <!-- Unfilled Countries -->
+    <div class="flex items-center justify-between py-2">
+      <label class="text-gray-800 min-w-[140px] mr-2">Unfilled Countries</label>
+      <div class="flex items-center gap-3">
+        <div class="relative h-12 w-12">
+          <div
+            id="unfilledColorBox"
+            class="h-full w-full cursor-pointer rounded-lg border border-gray-200 transition-all hover:ring-2 hover:ring-blue-500"
+            style="background-color: #E1B26A;"
+          ></div>
+          <input
+            type="color"
+            id="unfilledColorPicker"
+            value="#E1B26A"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+          >
+        </div>
+        <input
+          type="text"
+          id="unfilledColorText"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          value="#E1B26A"
+          spellcheck="false"
+        >
+      </div>
+    </div>
+
+    <!-- Selected Countries -->
+    <div class="flex items-center justify-between py-2">
+      <label class="text-gray-800 min-w-[140px] mr-2">Selected Countries</label>
+      <div class="flex items-center gap-3">
+        <div class="relative h-12 w-12">
+          <div
+            id="selectedColorBox"
+            class="h-full w-full cursor-pointer rounded-lg border border-gray-200 transition-all hover:ring-2 hover:ring-blue-500"
+            style="background-color: #FFFFFF;"
+          ></div>
+          <input
+            type="color"
+            id="selectedColorPicker"
+            value="#FFFFFF"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+          >
+        </div>
+        <input
+          type="text"
+          id="selectedColorText"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          value="#FFFFFF"
+          spellcheck="false"
+        >
+      </div>
+    </div>
+
+    <!-- Borders -->
+    <div class="flex items-center justify-between py-2">
+      <label class="text-gray-800 min-w-[140px] mr-2">Borders</label>
+      <div class="flex items-center gap-3">
+        <div class="relative h-12 w-12">
+          <div
+            id="borderColorBox"
+            class="h-full w-full cursor-pointer rounded-lg border border-gray-200 transition-all hover:ring-2 hover:ring-blue-500"
+            style="background-color: #000000;"
+          ></div>
+          <input
+            type="color"
+            id="borderColorPicker"
+            value="#000000"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+          >
+        </div>
+        <input
+          type="text"
+          id="borderColorText"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          value="#000000"
+          spellcheck="false"
+        >
+      </div>
+    </div>
+  </div>
+</div>

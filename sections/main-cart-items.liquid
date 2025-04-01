@@ -141,7 +141,11 @@
 
                           {%- for property in item.properties -%}
                             {%- assign property_first_char = property.first | slice: 0 -%}
-                            {%- if property.last != blank and property_first_char != '_' -%}
+                            {% comment %} Custom code and property.first != 'mapData' {% endcomment %}
+                            {%- if property.last != blank
+                              and property_first_char != '_'
+                              and property.first != 'mapData'
+                            -%}
                               <div class="product-option">
                                 <dt>{{ property.first }}:</dt>
                                 <dd>

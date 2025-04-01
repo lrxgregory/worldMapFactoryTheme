@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+    --ocean-color: #091c2a;
+    --selected-color: #ffffff;
+    --unfilled-color: #e1b26a;
+    --border-color: #000000;
+    --highlighted-color: #e5e5e5;
+}
+
+.highlighted {
+    fill: var(--highlighted-color) !important;
+}
+
+#worldMap path.selected {
+    fill: var(--selected-color);
+}
+
+.border-color {
+    border: 1px solid var(--border-color);
+}
+
+.unfilled-color {
+    fill: var(--unfilled-color);
+}
+
+#oceanColorBox {
+    background-color: var(--ocean-color);
+}
+
+#selectedColorBox {
+    background-color: var(--selected-color);
+}
+
+#unfilledColorBox {
+    background-color: var(--unfilled-color);
+}
+
+#borderColorBox {
+    background-color: var(--border-color);
+}
+
+#worldMap {
+    background-color: var(--ocean-color);
+}
+
+#worldMap path {
+    fill: var(--unfilled-color);
+    stroke: var(--border-color);
+    stroke-width: 0.3;
+}
+
+#ColorSettings div:empty {
+    display: block;
+}
+
+variant-selects>fieldset>legend.form__label,
+label.quantity__label.form__label {
+    font-size: 18px;
+    color: #121212;
+}

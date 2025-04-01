@@ -1,0 +1,92 @@
+{% assign countries = 'Afghanistan,Albania,Algeria,American Samoa,Andorra,Angola,Anguilla,Antarctica,Antigua and Barbuda,Argentina,Armenia,Aruba,Australia,Austria,Azerbaijan,Bahamas,Bahrain,Bangladesh,Barbados,Belarus,Belgium,Belize,Benin,Bermuda,Bhutan,Bolivia,Bosnia and Herzegovina,Botswana,Bouvet Island,Brazil,British Indian Ocean Territory,British Virgin Islands,Brunei,Bulgaria,Burkina Faso,Burundi,Cambodia,Cameroon,Canada,Cape Verde,Caribbean Netherlands,Cayman Islands,Central African Republic,Chad,Chile,China,Christmas Island,Cocos (Keeling) Islands,Colombia,Comoros,Cook Islands,Costa Rica,Croatia,Cuba,Curaçao,Cyprus,Czechia,DR Congo,Denmark,Djibouti,Dominica,Dominican Republic,Ecuador,Egypt,El Salvador,Equatorial Guinea,Eritrea,Estonia,Eswatini,Ethiopia,Falkland Islands,Faroe Islands,Fiji,Finland,France,French Guiana,French Polynesia,French Southern and Antarctic Lands,Gabon,Gambia,Georgia,Germany,Ghana,Greece,Greenland,Grenada,Guadeloupe,Guam,Guatemala,Guernsey,Guinea,Guinea-Bissau,Guyana,Haiti,Heard Island and McDonald Islands,Honduras,Hong Kong,Hungary,Iceland,India,Indonesia,Iran,Iraq,Ireland,Isle of Man,Israel,Italy,Ivory Coast,Jamaica,Japan,Jersey,Jordan,Kazakhstan,Kenya,Kiribati,Kosovo,Kuwait,Kyrgyzstan,Laos,Latvia,Lebanon,Lesotho,Liberia,Libya,Liechtenstein,Lithuania,Luxembourg,Macau,Madagascar,Malawi,Malaysia,Maldives,Mali,Malta,Marshall Islands,Martinique,Mauritania,Mauritius,Mayotte,Mexico,Micronesia,Moldova,Monaco,Mongolia,Montenegro,Montserrat,Morocco,Mozambique,Myanmar,Namibia,Nauru,Nepal,Netherlands,New Caledonia,New Zealand,Nicaragua,Niger,Nigeria,Niue,Norfolk Island,North Korea,North Macedonia,Northern Mariana Islands,Norway,Oman,Pakistan,Palau,Palestine,Panama,Papua New Guinea,Paraguay,Peru,Philippines,Pitcairn Islands,Poland,Portugal,Puerto Rico,Qatar,Republic of the Congo,Romania,Russia,Rwanda,Réunion,Saint Barthélemy,Saint Helena Ascension and Tristan da Cunha,Saint Kitts and Nevis,Saint Lucia,Saint Martin,Saint Pierre and Miquelon,Saint Vincent and the Grenadines,Samoa,San Marino,Saudi Arabia,Senegal,Serbia,Seychelles,Sierra Leone,Singapore,Sint Maarten,Slovakia,Slovenia,Solomon Islands,Somalia,South Africa,South Georgia,South Korea,South Sudan,Spain,Sri Lanka,Sudan,Suriname,Svalbard and Jan Mayen,Sweden,Switzerland,Syria,São Tomé and Príncipe,Taiwan,Tajikistan,Tanzania,Thailand,Timor-Leste,Togo,Tokelau,Tonga,Trinidad and Tobago,Tunisia,Turkey,Turkmenistan,Turks and Caicos Islands,Tuvalu,Uganda,Ukraine,United Arab Emirates,United Kingdom,United States,United States Minor Outlying Islands,United States Virgin Islands,Uruguay,Uzbekistan,Vanuatu,Vatican City,Venezuela,Vietnam,Wallis and Futuna,Western Sahara,Yemen,Zambia,Zimbabwe,Åland Islands'
+  | split: ','
+%}
+
+{% assign isoCode = 'AF,AL,DZ,AS,AD,AO,AI,AQ,AG,AR,AM,AW,AU,AT,AZ,BS,BH,BD,BB,BY,BE,BZ,BJ,BM,BT,BO,BA,BW,BV,BR,IO,VG,BN,BG,BF,BI,KH,CM,CA,CV,BQ,KY,CF,TD,CL,CN,CX,CC,CO,KM,CK,CR,HR,CU,CW,CY,CZ,CD,DK,DJ,DM,DO,EC,EG,SV,GQ,ER,EE,SZ,ET,FK,FO,FJ,FI,FR,GF,PF,TF,GA,GM,GE,DE,GH,GR,GL,GD,GP,GU,GT,GG,GN,GW,GY,HT,HM,HN,HK,HU,IS,IN,ID,IR,IQ,IE,IM,IL,IT,CI,JM,JP,JE,JO,KZ,KE,KI,XK,KW,KG,LA,LV,LB,LS,LR,LY,LI,LT,LU,MO,MG,MW,MY,MV,ML,MT,MH,MQ,MR,MU,YT,MX,FM,MD,MC,MN,ME,MS,MA,MZ,MM,NA,NR,NP,NL,NC,NZ,NI,NE,NG,NU,NF,KP,MK,MP,NO,OM,PK,PW,PS,PA,PG,PY,PE,PH,PN,PL,PT,PR,QA,CG,RO,RU,RW,RE,BL,SH,KN,LC,MF,PM,VC,WS,SM,SA,SN,RS,SC,SL,SG,SX,SK,SI,SB,SO,ZA,GS,KR,SS,ES,LK,SD,SR,SJ,SE,CH,SY,ST,TW,TJ,TZ,TH,TL,TG,TK,TO,TT,TN,TR,TM,TC,TV,UG,UA,AE,GB,US,UM,VI,UY,UZ,VU,VA,VE,VN,WF,EH,YE,ZM,ZW,AX'
+  | split: ','
+%}
+
+<div id="countryFlagList" class="max-h-[300px] overflow-y-auto lg:h-full mb-4">
+  <div class="sticky top-0 z-10 bg-white">
+    <h3
+      onclick="toggleDropdown('country-settings-content', 'countries-settings-icon', 'searchCountry')"
+      class="text-lg font-bold cursor-pointer flex items-center justify-between py-2"
+    >
+      {{ 'Countries' | t }}
+      <span id="countries-settings-icon" class="transform transition-transform duration-200">
+        {%- render 'chevron-up' -%}
+      </span>
+    </h3>
+    <div id="searchCountry" class="py-2">
+      <div
+        id="unselectAll"
+        class="hidden w-full cursor-pointer items-center rounded-lg border border-gray-300 p-1 text-lg transition duration-200 ease-in-out hover:bg-red-100 hover:shadow-md lg:p-2 lg:text-sm"
+      >
+        <span class="cross px-2 text-red-500">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewbox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="h-8 w-8 lg:h-4 lg:w-4"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </span>
+        <span class="text-lg text-gray-700 hover:text-red-600 lg:text-[12px]">Unselect All</span>
+      </div>
+
+      <div id="searchCountryFilter" class="flex w-full items-center">
+        <input
+          type="text"
+          id="countryFilter"
+          placeholder="Search countries"
+          class="w-full rounded-lg border border-gray-300 p-2 text-lg lg:text-[12px]"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des pays - Flex col avec mêmes IDs et structure -->
+  <div id="country-settings-content" class="w-full transition-all duration-200">
+    <ul class="countryFlagList flex flex-col gap-3 lg:gap-2">
+      <!-- Changé grid->flex flex-col -->
+      {% for country in countries %}
+        {% assign country_index = forloop.index0 %}
+        {% assign iso = isoCode[country_index] %}
+        <li class="country flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+          <input
+            type="checkbox"
+            name="country"
+            value="{{ iso | upcase }}"
+            id="country-{{ iso | downcase }}"
+            class="hidden peer"
+          >
+          <label for="country-{{ iso | downcase }}" class="flex items-center w-full cursor-pointer">
+            <img
+              src="https://flagcdn.com/w160/{{ iso | downcase }}.png"
+              srcset="https://flagcdn.com/w160/{{ iso | downcase }}.png 2x"
+              alt="Flag of {{ country }}"
+              class="w-14 h-auto mr-4"
+              loading="lazy"
+              width="100%"
+              height="100%"
+            >
+            <span class="text-xl lg:text-[14px] flex-grow">{{ country }}</span>
+            <!-- Taille de police originale -->
+            <!-- Indicateur de sélection optionnel -->
+            <svg
+              class="w-5 h-5 text-blue-600 opacity-0 peer-checked:opacity-100 transition-opacity ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
