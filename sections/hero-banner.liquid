@@ -1,0 +1,107 @@
+{{ 'component-map.css' | asset_url | stylesheet_tag }}
+{{ 'style.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-animation.js' | asset_url }}" defer></script>
+
+<div class="hero-banner relative overflow-hidden">
+  <!-- SVG/Image Section -->
+  {% if section.settings.background_image != blank %}
+    <div class="hero-svg absolute inset-0 w-full h-full">
+      <img
+        src="{{ section.settings.background_image | img_url: 'master' }}"
+        alt="{{ section.settings.background_image.alt }}"
+        class="h-full w-full object-cover"
+      >
+    </div>
+  {% else %}
+    <div class="hero-svg absolute inset-0 w-full h-full">
+      {% render 'map' %}
+    </div>
+  {% endif %}
+
+  <!-- Content Section -->
+  ``
+
+  <div class="hero-content relative z-10 text-center flex flex-col items-center justify-center h-full">
+    {% comment %} text-3xl sm:text-3xl font-extrabold lg:text-4xl uppercase mb-4 {% endcomment %}
+    <h1 class="!text-white text-3xl lg:text-4xl uppercase !font-extrabold mb-4">{{ section.settings.main_heading }}</h1>
+    {% if section.settings.subheading != blank %}
+      <p class="text-sm sm:text-base lg:text-xl mb-6 font-bold">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% if section.settings.button_link != blank and section.settings.button_text != blank %}
+      <div class="mt-6">
+        <a
+          href="{{ section.settings.button_link }}"
+          class="inline-block rounded bg-white px-6 py-2 sm:px-8 sm:py-3 text-xs sm:text-sm lg:text-base font-medium text-gray-900 shadow hover:bg-black hover:text-white active:bg-gray-900 transform hover:scale-105 transition-all duration-200 focus:outline-none uppercase"
+        >
+          {{ section.settings.button_text | escape }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  /* Mobile Styles */
+  @media screen and (max-width: 1024px) {
+    .hero-banner {
+      height: 35vh; /* Adjust height for smaller screens */
+    }
+
+    .hero-content {
+      padding-top: 20px;
+    }
+  }
+
+  /* Desktop Styles */
+  {% if page.handle == 'contact' %}
+    .hero-banner {
+      height: 35vh;
+    }
+  {% else %}
+    @media screen and (min-width: 1024px) {
+      .hero-banner {
+        height: calc(100vh - 3rem); /* Height minus navbar */
+      }
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main heading",
+      "default": "Craft your own world map"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

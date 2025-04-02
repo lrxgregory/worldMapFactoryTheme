@@ -12,12 +12,12 @@
 
       <!-- Slides des images -->
       {% for image in product.images %}
-        <div class=" flex-shrink-0 w-full border lg:hidden">
+        <div id="slider-images" class=" flex-shrink-0 w-full">
           <img
             class="object-cover object-center w-full h-full"
-            src="{{ image | image_url: 'large' }}"
+            src="{{ image.src | img_url: 'large' }}"
             alt="{{ product.title | escape }} - {{ image.alt | default: product.title | escape }}"
-            data-carousel-image="{{ image | image_url: 'large' }}"
+            data-carousel-image="{{ image.src | img_url: 'large' }}"
             width="100%"
             height="100%"
           >
@@ -28,7 +28,7 @@
     <!-- Boutons de navigation -->
     <button
       id="carousel-prev"
-      class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white px-1 py-1 rounded lg:hidden"
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 px-1 py-1 rounded"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@
     </button>
     <button
       id="carousel-next"
-      class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white px-1 py-1 rounded lg:hidden"
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 px-1 py-1 rounded"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -59,13 +59,13 @@
   </div>
 
   <!-- Grille pour desktop -->
-  <div id="grid-container">
+  <div id="grid-container" class="mt-2">
     {% for image in product.images %}
       <img
         class="object-cover object-center w-full h-full border"
-        src="{{ image | image_url: 'large' }}"
+        src="{{ image.src | img_url: 'large' }}"
         alt="{{ product.title | escape }} - {{ image.alt | default: product.title | escape }}"
-        data-carousel-image="{{ image | image_url: 'large' }}"
+        data-carousel-image="{{ image.src | img_url: 'large' }}"
         width="100%"
         height="100%"
       >
@@ -73,11 +73,10 @@
   </div>
 
   <!-- Indicateurs -->
-  <div id="carousel-indicators" class="carousel-indicators flex justify-center gap-2 mt-4 lg:hidden">
-    {% assign total_slides = product.images.size %}
-    {% for i in (0..total_slides) %}
+  <div id="carousel-indicators" class="relative -top-14 flex justify-center items-center gap-8 mt-4 w-full">
+    {% for i in (0..product.images.size) %}
       <button
-        class="w-2 h-2 rounded-full bg-gray-300 transition-colors"
+        class="w-2 h-2 rounded-full transition-colors {% if forloop.first %}bg-gray-500{% else %}bg-gray-300 hover:bg-gray-400{% endif %}"
         data-slide-index="{{ i }}"
         type="button"
       ></button>
@@ -126,7 +125,7 @@
       track.style.transform = `translateX(${offset}%)`;
 
       indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('bg-blue-500', index === currentSlideIndex);
+        indicator.classList.toggle('bg-gray-500', index === currentSlideIndex);
         indicator.classList.toggle('bg-gray-300', index !== currentSlideIndex);
       });
     };

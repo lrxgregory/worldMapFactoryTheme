@@ -64,12 +64,33 @@ label.quantity__label.form__label {
     display: none;
 }
 
-@media (min-width: 1024px) {
+#slider-images,
+#carousel-prev,
+#carousel-next {
+    display: block;
+}
+
+#carousel-indicators {
+    display: flex;
+}
+
+@media (min-width: 750px) {
 
     /* Breakpoint lg de Tailwind */
     #grid-container {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.5rem;
+        gap: 1rem;
     }
+
+    #slider-images,
+    #carousel-indicators,
+    #carousel-prev,
+    #carousel-next {
+        display: none
+    }
+}
+
+hero-content>p {
+    font-weight: 700 !important;
 }
