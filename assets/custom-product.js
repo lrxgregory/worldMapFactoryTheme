@@ -48,3 +48,79 @@ function toggleDropdown(contentId, iconId, searchId = null) {
     }
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {  
+  // Variable pour éviter les boucles infinies
+  let isUpdating = false;
+  
+  // Fonction pour sélectionner la première taille disponible
+  function selectFirstAvailableSize() {
+    // Si déjà en cours de mise à jour, ignorer
+    if (isUpdating) return;
+    
+    try {
+      isUpdating = true;
+
+      // Récupérer toutes les options de taille
+      const sizeRadios = document.querySelectorAll('.product-form__input--pill input[name^="Taille"]');
+      
+      if (sizeRadios.length === 0) {
+        return;
+      }
+      
+      // Trouver la première taille qui n'est pas désactivée
+      let firstAvailable = null;
+      for (const sizeRadio of sizeRadios) {
+        if (!sizeRadio.classList.contains('disabled')) {
+          firstAvailable = sizeRadio;
+          break;
+        }
+      }
+      
+      if (firstAvailable) {
+        // Utiliser un délai avant de sélectionner la taille
+        setTimeout(() => {
+          firstAvailable.checked = true;
+          
+          // Déclencher un événement change
+          const event = new Event('change', { bubbles: true });
+          firstAvailable.dispatchEvent(event);
+        }, 100);
+      }
+    } catch (error) {
+      console.error('Error during size selection:', error);
+    } finally {
+      // Réinitialiser le drapeau après un délai
+      setTimeout(() => {
+        isUpdating = false;
+      }, 1000);
+    }
+  }
+  
+  // Surveiller les clics sur les inputs de type ou leurs labels
+  document.body.addEventListener('click', function(event) {
+    // Si on clique sur un label de type
+    const typeLabel = event.target.closest('.product-form__input--pill [name^="Type"] + label');
+    if (typeLabel) {
+      console.log('Clic sur label de type détecté:', typeLabel.textContent.trim());
+      setTimeout(selectFirstAvailableSize, 300);
+      return;
+    }
+    
+    // Si on clique sur un input de type
+    const typeInput = event.target.closest('.product-form__input--pill [name^="Type"]');
+    if (typeInput) {
+      console.log('Clic sur input de type détecté:', typeInput.value);
+      setTimeout(selectFirstAvailableSize, 300);
+    }
+  });
+  
+  // Ajouter des écouteurs d'événements aux inputs de type
+  const typeRadios = document.querySelectorAll('.product-form__input--pill [name^="Type"]');
+  typeRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      console.log('Changement de type détecté:', this.value);
+      setTimeout(selectFirstAvailableSize, 300);
+    });
+  });
+});

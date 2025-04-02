@@ -94,3 +94,7 @@ label.quantity__label.form__label {
 hero-content>p {
     font-weight: 700 !important;
 }
+
+.product-form__input--pill input[type='radio'].disabled+label {
+    display: none;
+}

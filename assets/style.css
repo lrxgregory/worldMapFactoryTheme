@@ -901,6 +901,9 @@ variant-selects>fieldset>legend.form__label, label.quantity__label.form__label {
 hero-content>p {
   font-weight: 700 !important;
 }
+.product-form__input--pill input[type='radio'].disabled+label {
+  display: none;
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
