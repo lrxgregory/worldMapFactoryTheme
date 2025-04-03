@@ -888,6 +888,15 @@ variant-selects>fieldset>legend.form__label, label.quantity__label.form__label {
 #carousel-indicators {
   display: flex;
 }
+hero-content>p {
+  font-weight: 700 !important;
+}
+.product-form__input--pill input[type='radio'].disabled+label {
+  display: none;
+}
+.product-description-desktop {
+  display: none;
+}
 @media (min-width: 750px) {
   #grid-container {
     display: grid;
@@ -897,12 +906,17 @@ variant-selects>fieldset>legend.form__label, label.quantity__label.form__label {
   #slider-images, #carousel-indicators, #carousel-prev, #carousel-next {
     display: none;
   }
+  .product-description-desktop {
+    display: block;
+  }
+  .product-description-mobile {
+    display: none;
+  }
 }
-hero-content>p {
-  font-weight: 700 !important;
-}
-.product-form__input--pill input[type='radio'].disabled+label {
-  display: none;
+@media (width >=1024px) {
+  .product-description-desktop {
+    display: block;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

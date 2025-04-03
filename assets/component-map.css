@@ -74,6 +74,18 @@ label.quantity__label.form__label {
     display: flex;
 }
 
+hero-content>p {
+    font-weight: 700 !important;
+}
+
+.product-form__input--pill input[type='radio'].disabled+label {
+    display: none;
+}
+
+.product-description-desktop {
+    display: none;
+}
+
 @media (min-width: 750px) {
 
     /* Breakpoint lg de Tailwind */
@@ -89,12 +101,18 @@ label.quantity__label.form__label {
     #carousel-next {
         display: none
     }
+
+    .product-description-desktop {
+        display: block;
+    }
+
+    .product-description-mobile {
+        display: none;
+    }
 }
 
-hero-content>p {
-    font-weight: 700 !important;
-}
-
-.product-form__input--pill input[type='radio'].disabled+label {
-    display: none;
+@media (width >=1024px) {
+    .product-description-desktop {
+        display: block;
+    }
 }
