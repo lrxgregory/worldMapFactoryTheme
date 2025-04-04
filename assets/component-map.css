@@ -145,3 +145,13 @@ hero-content>p {
         padding: 0.875rem 2rem;
     }
 }
+
+.hero-banner #worldMap {
+    background-color: var(--selected-color);
+}
+
+.hero-banner #worldMap path {
+    fill: var(--selected-color);
+    stroke: var(--border-color);
+    stroke-width: 0.3;
+}

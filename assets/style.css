@@ -40,6 +40,7 @@
     --font-weight-extrabold: 800;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -613,9 +614,22 @@
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
   }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
+  }
   .outline-none {
     --tw-outline-style: none;
     outline-style: none;
+  }
+  .\[-webkit-text-stroke\:1px_black\] {
+    -webkit-text-stroke: 1px black;
+  }
+  .\[text-shadow\:_1px_1px_2px_black\] {
+    text-shadow:  1px 1px 2px black;
+  }
+  .\[text-stroke\:1px_black\] {
+    text-stroke: 1px black;
   }
   .peer-checked\:opacity-100 {
     &:is(:where(.peer):checked ~ *) {
@@ -883,6 +897,14 @@ hero-content>p {
     font-size: 16px;
     padding: 0.875rem 2rem;
   }
+}
+.hero-banner #worldMap {
+  background-color: var(--selected-color);
+}
+.hero-banner #worldMap path {
+  fill: var(--selected-color);
+  stroke: var(--border-color);
+  stroke-width: 0.3;
 }
 @property --tw-translate-x {
   syntax: "*";
