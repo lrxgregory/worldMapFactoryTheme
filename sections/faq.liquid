@@ -1,0 +1,113 @@
+<div class="faq">
+  <div class="faq__wrapper page-width">
+    {% if section.settings.heading != blank %}
+      <h2 class="faq__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="faq__items">
+      {% for block in section.blocks %}
+        <div class="faq__item" {{ block.shopify_attributes }}>
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-{{ block.id }}">
+            {{ block.settings.question }}
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-answer-{{ block.id }}" hidden>
+            {{ block.settings.answer }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.faq__question').forEach((button) => {
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        const answer = button.nextElementSibling;
+
+        document.querySelectorAll('.faq__answer').forEach((el) => (el.hidden = true));
+        document.querySelectorAll('.faq__question').forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+
+        if (!expanded) {
+          answer.hidden = false;
+          button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .faq__heading {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .faq__item {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .faq__question {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    padding: 1rem 0;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .faq__icon {
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .faq__answer {
+    padding: 0.5rem 0 1rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Questions fréquentes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Réponse"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [{ "type": "question" }, { "type": "question" }]
+    }
+  ]
+}
+{% endschema %}
