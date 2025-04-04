@@ -10,22 +10,27 @@ const mapEffects = {
         this.paths.forEach(path => {
             path.style.transition = "fill 0.8s ease-out, stroke 0.8s ease-out";
         });
-    
+
         setTimeout(() => {
             // Animation de l'océan (bleu foncé)
-            this.ocean.style.backgroundColor = "#091c2a"; // --ocean-color
-    
+            this.ocean.style.transition = "background-color 800ms ease-out";
+            setTimeout(() => {
+                this.ocean.style.backgroundColor = "#091c2a";
+            }, 300); // Délai pour le fond
+
             // Animation des pays (or clair) avec un délai aléatoire entre 0 et 300ms
-            this.paths.forEach((path, i) => {
-                setTimeout(() => {
-                    path.style.fill = "#e1b26a"; // --unfilled-color
-                }, Math.random() * 500); // Délai progressif pour un effet "wave"
-            });
-    
+            setTimeout(() => {
+                this.paths.forEach((path, i) => {
+                    setTimeout(() => {
+                        path.style.fill = "#e1b26a"; // --unfilled-color
+                    }, Math.random() * 500); // Délai progressif pour un effet "wave"
+                });
+            }, 700); // Délai pour le fond
+
             // 4. Sauvegarde des nouvelles couleurs pour l'animation
             setTimeout(() => {
                 this.saveOriginalColors();
-                
+
                 // Démarrer l'animation normale après la transition (optionnel)
                 setTimeout(() => {
                     this.startAnimation();
@@ -166,5 +171,5 @@ const mapEffects = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    mapEffects.init();    
+    mapEffects.init();
 });
