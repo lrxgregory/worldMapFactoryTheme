@@ -116,3 +116,32 @@ hero-content>p {
         display: block;
     }
 }
+
+#hero-button {
+    /* Mobile */
+    font-size: 10px;
+    padding: 0.5rem 1.25rem;
+
+    /* Tablette (≥640px) */
+    @media (min-width: 640px) {
+        font-size: 10px;
+        padding: 0.625rem 1.5rem;
+    }
+
+    /* Small desktop (≥768px) */
+    @media (min-width: 768px) {
+        font-size: 12px;
+    }
+
+    /* Desktop (≥1024px) */
+    @media (min-width: 1024px) {
+        font-size: 14px;
+        padding: 0.75rem 1.75rem;
+    }
+
+    /* Big screen (≥1280px) */
+    @media (min-width: 1280px) {
+        font-size: 16px;
+        padding: 0.875rem 2rem;
+    }
+}

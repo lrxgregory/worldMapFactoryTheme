@@ -18,11 +18,10 @@
   {% endif %}
 
   <!-- Content Section -->
-  ``
-
   <div class="hero-content relative z-10 text-center flex flex-col items-center justify-center h-full">
-    {% comment %} text-3xl sm:text-3xl font-extrabold lg:text-4xl uppercase mb-4 {% endcomment %}
-    <h1 class="!text-white text-3xl lg:text-4xl uppercase !font-extrabold mb-4">{{ section.settings.main_heading }}</h1>
+    <h1 class="!text-white text-3xl lg:text-4xl uppercase !font-extrabold mb-4">
+      {{ section.settings.main_heading }}
+    </h1>
     {% if section.settings.subheading != blank %}
       <p class="text-sm sm:text-base lg:text-xl mb-6 font-bold">{{ section.settings.subheading }}</p>
     {% endif %}
@@ -30,8 +29,9 @@
     {% if section.settings.button_link != blank and section.settings.button_text != blank %}
       <div class="mt-6">
         <a
+          id="hero-button"
           href="{{ section.settings.button_link }}"
-          class="inline-block rounded bg-white px-6 py-2 sm:px-8 sm:py-3 text-xs sm:text-sm lg:text-base font-medium text-gray-900 shadow hover:bg-black hover:text-white active:bg-gray-900 transform hover:scale-105 transition-all duration-200 focus:outline-none uppercase"
+          class="inline-block rounded bg-white px-6 py-2 sm:px-8 sm:py-3 font-semibold text-gray-900 shadow hover:bg-gray-50 hover:scale-105 transition-all duration-200 focus:outline-none uppercase"
         >
           {{ section.settings.button_text | escape }}
         </a>
