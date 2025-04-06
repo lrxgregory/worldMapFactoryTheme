@@ -1,5 +1,4 @@
 <div class="product-display relative mx-auto">
-  <!-- Map rendue une seule fois -->
   <!-- Carousel contenant la map et les images -->
   <div id="carousel-container" class="carousel-container relative overflow-hidden">
     <div class="carousel-track flex transition-transform duration-500" data-carousel-track>
@@ -12,9 +11,9 @@
 
       <!-- Slides des images -->
       {% for image in product.images %}
-        <div id="slider-images" class=" flex-shrink-0 w-full">
+        <div id="slider-images" class="flex-shrink-0 w-full carousel-image-container">
           <img
-            class="object-cover object-center w-full h-full"
+            class="object-contain object-center w-full h-full"
             src="{{ image.src | img_url: 'large' }}"
             alt="{{ product.title | escape }} - {{ image.alt | default: product.title | escape }}"
             data-carousel-image="{{ image.src | img_url: 'large' }}"
@@ -73,7 +72,7 @@
   </div>
 
   <!-- Indicateurs -->
-  <div id="carousel-indicators" class="relative -top-14 flex justify-center items-center gap-8 mt-4 w-full">
+  <div id="carousel-indicators" class="flex justify-center items-center gap-8 py-4 w-full">
     {% for i in (0..product.images.size) %}
       <button
         class="w-2 h-2 rounded-full transition-colors {% if forloop.first %}bg-gray-500{% else %}bg-gray-300 hover:bg-gray-400{% endif %}"
@@ -89,20 +88,36 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    max-height: 500px;
   }
 
   .carousel-track {
     display: flex;
     transition: transform 0.3s ease-in-out;
+    height: 100%;
   }
 
   .carousel-slide {
     flex-shrink: 0;
     width: 100%;
+    height: 100%;
+  }
+
+  .carousel-image-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .carousel-indicators button {
     cursor: pointer;
+  }
+
+  #slider-images img {
+    max-height: 480px;
+    width: auto;
+    margin: 0 auto;
   }
 </style>
 
