@@ -536,5 +536,12 @@
       "expanded": "Formulaire de destinataire de carte-cadeau agrandi",
       "collapsed": "Formulaire de destinataire de carte-cadeau réduit"
     }
-  }
+  },
+  "colors": "Couleurs",
+  "countries": "Pays",
+  "unselect_all": "Tout désélectionner",
+  "ocean_color": "Couleur de l'océan",
+  "unfilled_countries": "Pays non séléctionnés",
+  "selected_countries": "Pays sélectionnés",
+  "borders": "Frontières",
 }
