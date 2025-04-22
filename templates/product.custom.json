@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -11,7 +20,8 @@
           }
         },
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "caption": {
           "type": "text",
@@ -21,16 +31,19 @@
           }
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "button"
+            "picker_type": "button",
+            "swatch_shape": "circle"
           }
         },
         "quantity_selector": {
-          "type": "quantity_selector"
+          "type": "quantity_selector",
+          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -40,23 +53,15 @@
           }
         },
         "description": {
-          "type": "description"
+          "type": "description",
+          "settings": {}
         },
         "collapsible-row-0": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Materials",
+            "heading": "Matériaux",
             "icon": "leather",
-            "content": "",
-            "page": ""
-          }
-        },
-        "collapsible-row-1": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Shipping & Returns",
-            "icon": "truck",
-            "content": "",
+            "content": "<ul><li>Épaisseur du papier : 0,26 mm </li><li>Poids du papier : 189 g/m²</li><li>Opacité : 94 %</li><li>Luminosité ISO : 104 %</li><li>Papier provenant du Japon</li></ul>",
             "page": ""
           }
         },
@@ -65,16 +70,16 @@
           "settings": {
             "heading": "Dimensions",
             "icon": "ruler",
-            "content": "",
+            "content": "<ul><li>30×40 cm</li><li>40×50 cm (40.64×50.8 cm réel) </li><li>Fichiers : rapports 16:9 et 4:3 (voir description)</li></ul>",
             "page": ""
           }
         },
-        "collapsible-row-3": {
+        "collapsible-row-1": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Care Instructions",
-            "icon": "heart",
-            "content": "",
+            "heading": "Livraison et retours",
+            "icon": "truck",
+            "content": "<p><strong>Livraison</strong></p><ul><li>Poster physique : 4-5 jours ouvrés (France)</li><li>Fichier numérique : instantané (24/7)</li></ul><p><strong>Retours</strong></p><ul><li><strong>Produits physiques</strong> :<br/>✓ Acceptés sous 30 jours pour <strong>défauts uniquement</strong><br/>✓ Photos requises (<a href=\"https://mailto:contact@votreboite.com/\" target=\"_blank\">contact@worldmapfactory.com</a>)</li><li><strong>Fichiers numériques</strong> : Non remboursables après téléchargement</li></ul><p><em>Conformément à l’article L221-28 du Code de la consommation</em></p>",
             "page": ""
           }
         },
@@ -95,122 +100,86 @@
         "buy_buttons",
         "description",
         "collapsible-row-0",
-        "collapsible-row-1",
         "collapsible-row-2",
-        "collapsible-row-3",
+        "collapsible-row-1",
         "share"
+      ],
+      "custom_css": [
+        "@media (max-width: 749px) {product-info {padding-top: 0; }}"
       ],
       "settings": {
         "enable_sticky_info": true,
-        "gallery_layout": "stacked",
+        "color_scheme": "",
         "media_size": "large",
         "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
         "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 36,
         "padding_bottom": 12
       }
     },
-    "image-with-text": {
-      "type": "image-with-text",
-      "blocks": {
-        "image-with-text-0": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "image-with-text-1": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "text_style": "body"
-          }
-        }
-      },
-      "block_order": [
-        "image-with-text-0",
-        "image-with-text-1"
-      ],
-      "settings": {
-        "height": "small",
-        "desktop_image_width": "medium",
-        "layout": "text_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "color_scheme": "scheme-2",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column-0": {
-          "type": "column",
-          "settings": {
-            "title": "Free Shipping",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column-1": {
-          "type": "column",
-          "settings": {
-            "title": "Hassle-Free Exchanges",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column-0",
-        "column-1"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 2,
-        "column_alignment": "left",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
-        "swipe_on_mobile": false,
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
+        "products_to_show": 4,
         "columns_desktop": 4,
+        "columns_mobile": "2",
         "color_scheme": "scheme-1",
         "image_ratio": "square",
+        "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 28
+      }
+    },
+    "faq_3iACtK": {
+      "type": "faq",
+      "blocks": {
+        "question_y679xm": {
+          "type": "question",
+          "settings": {
+            "question": "Quel format choisir ?",
+            "answer": "<p>Physique pour une décoration clé en main, numérique pour une impression flexible.</p>"
+          }
+        },
+        "question_EzeD6d": {
+          "type": "question",
+          "settings": {
+            "question": "Combien de temps pour la livraison ?",
+            "answer": "<p><strong>Poster physique :</strong> <br/>4-5 jours ouvrés (France)<br/><br/><strong>Fichier numérique :<br/></strong>Instantané (24/7)</p>"
+          }
+        },
+        "question_46dNnY": {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je retourner mon produits ?",
+            "answer": "<p><strong>Retour produit physique :</strong> <br/>✓ Acceptés sous 30 jours pour défauts uniquement.<br/>✓ Photos requises (contact@worldmapfactory.com)<br/><br/><strong>Retour produit numérique :<br/></strong>Il n'est pas possible de retourner les produits. Les produits numériques ne sont pas remboursables après téléchargement.<em><br/></em></p><p><em>Conformément à l’article L221-28 du Code de la consommation.</em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_y679xm",
+        "question_EzeD6d",
+        "question_46dNnY"
+      ],
+      "settings": {
+        "heading": "Questions fréquentes"
       }
     }
   },
   "order": [
     "main",
-    "image-with-text",
-    "multicolumn",
-    "related-products"
+    "related-products",
+    "faq_3iACtK"
   ]
 }
