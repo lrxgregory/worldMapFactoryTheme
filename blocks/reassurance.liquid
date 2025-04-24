@@ -1,0 +1,55 @@
+<div class="review-block flex flex-col md:flex-row justify-around bg-black py-10 px-4 sm:px-6 lg:px-8">
+  {% comment %} Livraison {% endcomment %}
+  <div class="flex flex-col items-center">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-10 w-10 text-white"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+    </svg>
+    <p class="mt-2 text-white font-medium">Livraison offerte</p>
+  </div>
+  {% comment %} Paiement {% endcomment %}
+  <div class="flex flex-col items-center">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-10 w-10 text-white"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+    <p class="mt-2 text-white font-medium">Paiement sécurisé</p>
+  </div>
+  {% comment %} Support {% endcomment %}
+  <div class="flex flex-col items-center">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-10 w-10 text-white"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+    </svg>
+    <p class="mt-2 text-white font-medium">Support client</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reassurance",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reassurance"
+    }
+  ]
+}
+{% endschema %}
