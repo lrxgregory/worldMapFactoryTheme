@@ -493,3 +493,13 @@ function resetFill(path) {
     countryPath.classList.remove('flag');
   });
 }
+
+document.querySelector('#unfilledFlagToggle').addEventListener('change', function () {
+  const unfilledColorSection = document.getElementById('unfilledCountries');
+  unfilledColorSection.classList.toggle('hidden', this.checked);
+});
+
+document.querySelector('#flagBackgroundToggle').addEventListener('change', function () {
+  const selectedColorSection = document.getElementById('selectedCountries');
+  selectedColorSection.classList.toggle('hidden', this.checked);
+});
