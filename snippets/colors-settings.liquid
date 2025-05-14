@@ -31,12 +31,14 @@
         <input
           type="text"
           id="oceanColorText"
-          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-grey-500 focus:border-grey-500 outline-none"
           value="#091C2A"
           spellcheck="false"
         >
       </div>
     </div>
+
+    {% render 'checkbox-flag', id: 'unfilledFlagToggle', label: 'Show Country Flags' %}
 
     <!-- Unfilled Countries -->
     <div class="flex items-center justify-between py-2">
@@ -58,13 +60,14 @@
         <input
           type="text"
           id="unfilledColorText"
-          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-grey-500 focus:border-grey-500 outline-none"
           value="#E1B26A"
           spellcheck="false"
         >
       </div>
     </div>
 
+    {% render 'checkbox-flag', id: 'flagBackgroundToggle', label: 'Use Country Flags' %}
     <!-- Selected Countries -->
     <div class="flex items-center justify-between py-2">
       <label class="text-gray-800 min-w-[140px] mr-2">{{ 'selected_countries' | t }}</label>
@@ -85,7 +88,7 @@
         <input
           type="text"
           id="selectedColorText"
-          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-grey-500 focus:border-grey-500 outline-none"
           value="#FFFFFF"
           spellcheck="false"
         >
@@ -112,7 +115,7 @@
         <input
           type="text"
           id="borderColorText"
-          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          class="w-28 rounded-md border border-gray-300 px-3 py-1 text-[12px] text-gray-800 focus:ring-2 focus:ring-grey-500 focus:border-grey-500 outline-none"
           value="#000000"
           spellcheck="false"
         >
