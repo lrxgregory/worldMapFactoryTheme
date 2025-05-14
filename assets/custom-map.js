@@ -54,19 +54,10 @@ worldMap.addEventListener('click', function (event) {
       // En mode drapeau : appliquer le drapeau lorsqu'on clique sur un pays
       const countryCode = path.dataset.countryCode.toLowerCase();
 
-      // Vérifier si un drapeau existe déjà pour ce pays
-      const existingFlag = document.querySelector(`#flag-img-${countryCode}`);
-
-      if (existingFlag) {
-        // Si le drapeau existe déjà, le supprimer (basculer)
-        resetFill(path);
-        selectedCountries--;
-      } else {
-        // Sinon, appliquer le drapeau
-        const flagUrl = `${flagBaseUrl}/${countryCode}.png`;
-        fillWithFlag(path, flagUrl);
-        selectedCountries++;
-      }
+      // Sinon, appliquer le drapeau
+      const flagUrl = `${flagBaseUrl}/${countryCode}.png`;
+      fillWithFlag(path, flagUrl, 'selected');
+      selectedCountries++;
 
       updateSelectedCountries();
     } else {
@@ -76,6 +67,7 @@ worldMap.addEventListener('click', function (event) {
         if (actualColor === selectedColor) {
           // Logique de désélection
           path.classList.remove('selected');
+          path.removeAttribute('data-selected-color');
           path.style.fill = unfilledColorPicker.value;
 
           let countryElement = document.querySelector(`div[data-iso="${isoCode.toLowerCase()}"]`);
@@ -114,29 +106,12 @@ worldMap.addEventListener('click', function (event) {
     const countryCode = flagId.replace('flag-img-', '');
     const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
     if (associatedPath) {
-      resetFill(associatedPath);
+      resetFill(associatedPath, 'selected');
       selectedCountries--;
       updateSelectedCountries();
     }
   }
 });
-
-// Mettre à jour le gestionnaire d'événements pour la case à cocher du mode drapeau
-if (unfilledFlagToggle) {
-  unfilledFlagToggle.addEventListener('change', function () {
-    if (!this.checked) {
-      // Si le mode drapeau est désactivé, supprimer tous les drapeaux
-      const flagImages = document.querySelectorAll('image[id^="flag-img-"]');
-      flagImages.forEach((image) => {
-        const countryCode = image.id.replace('flag-img-', '');
-        const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
-        if (associatedPath) {
-          resetFill(associatedPath);
-        }
-      });
-    }
-  });
-}
 
 oceanColorPicker.addEventListener('change', function () {
   let oceanColor = oceanColorPicker.value;
@@ -350,28 +325,38 @@ setupColorPicker('unfilled');
 setupColorPicker('selected');
 setupColorPicker('border');
 
-document.querySelector('#unfilledFlagToggle').addEventListener('click', function () {
-  const checkbox = this;
-  const unselectedCountries = document.querySelectorAll('path[data-country-code]:not(.selected)');
+unfilledFlagToggle.addEventListener('change', function () {
+  if (!this.checked) {
+    // Remove flags for countries that are not selected
+    const flaggedSelectedCountries = document.querySelectorAll('path[data-country-code]:not(.flag):not(.selected)');
 
-  if (checkbox.checked) {
+    flaggedSelectedCountries.forEach((path) => {
+      resetFill(path, 'unfilled');
+    });
+
+    // Also remove flags for previously flagged countries
+    const flagImages = document.querySelectorAll('image[id^="flag-img-"]');
+    flagImages.forEach((image) => {
+      const countryCode = image.id.replace('flag-img-', '');
+      const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
+
+      if (associatedPath && !associatedPath.classList.contains('selected')) {
+        resetFill(associatedPath, 'unfilled');
+      }
+    });
+  } else {
     // Apply flags to unselected countries
+    const unselectedCountries = document.querySelectorAll('path[data-country-code]:not(.selected)');
+
     unselectedCountries.forEach((path) => {
       const countryCode = path.dataset.countryCode.toLowerCase();
       const flagUrl = `${flagBaseUrl}/${countryCode}.png`;
-      fillWithFlag(path, flagUrl);
-    });
-  } else {
-    // Reset flags for countries that were just flagged
-    unselectedCountries.forEach((path) => {
-      if (path.classList.contains('flag')) {
-        resetFill(path);
-      }
+      fillWithFlag(path, flagUrl, 'unfilled');
     });
   }
 });
 
-function fillWithFlag(path, flagUrl) {
+function fillWithFlag(path, flagUrl, action) {
   // Vérifier si le chemin existe
   if (!path) {
     console.error('Path is undefined or null');
@@ -440,13 +425,10 @@ function fillWithFlag(path, flagUrl) {
     // Préserver la couleur sélectionnée si elle existe
     const selectedColor = countryPath.getAttribute('data-selected-color');
 
-    // Rendre le chemin semi-transparent pour le drapeau
-    countryPath.style.opacity = '0.15'; // Rendre semi-transparent
-    countryPath.style.stroke = borderColorPicker.value; // Maintenir la bordure
-
     // Marquer comme ayant un drapeau
-    countryPath.classList.add('flag');
-    // countryPath.classList.add('selected');
+    if (!countryPath.classList.contains(action)) {
+      countryPath.classList.add(action);
+    }
 
     // Si une couleur était sélectionnée, la stocker
     if (selectedColor) {
@@ -458,7 +440,8 @@ function fillWithFlag(path, flagUrl) {
 }
 
 // Fonction améliorée pour réinitialiser le remplissage
-function resetFill(path) {
+function resetFill(path, action) {
+  // Vérification complète que le chemin est valide et a un code de pays
   if (!path || !path.dataset || !path.dataset.countryCode) {
     console.error('Invalid path or missing country code:', path);
     return;
@@ -476,25 +459,17 @@ function resetFill(path) {
   // Mettre à jour tous les chemins associés à ce pays
   const allCountryPaths = document.querySelectorAll(`path[data-country-code="${path.dataset.countryCode}"]`);
 
+  if (allCountryPaths.length === 0) {
+    console.warn(`No paths found with country code: ${path.dataset.countryCode}`);
+  }
+
   allCountryPaths.forEach((countryPath) => {
-    // Restaurer la couleur d'origine si elle existe
-    const originalColor = countryPath.getAttribute('data-selected-color');
-
-    countryPath.style.opacity = '1'; // Restaurer l'opacité complète
-
-    if (originalColor) {
-      countryPath.style.fill = originalColor;
-      countryPath.classList.add('selected');
-    } else {
-      countryPath.style.fill = unfilledColorPicker.value;
-      countryPath.classList.remove('selected');
-    }
-
-    countryPath.classList.remove('flag');
+    countryPath.style.fill = unfilledColorPicker.value;
+    countryPath.classList.remove(action);
   });
 }
 
-document.querySelector('#unfilledFlagToggle').addEventListener('change', function () {
+unfilledFlagToggle.addEventListener('change', function () {
   const unfilledColorSection = document.getElementById('unfilledCountries');
   unfilledColorSection.classList.toggle('hidden', this.checked);
 });
