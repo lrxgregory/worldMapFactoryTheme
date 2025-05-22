@@ -17,25 +17,20 @@ let isoCode;
 
 // Ajoute un gestionnaire d'événements au survol de la carte
 worldMap.addEventListener('mouseover', function (event) {
-  // Vérifie si l'élément survolé est un <path> et s'il n'est pas déjà sélectionné
   if (event.target.tagName === 'path' && !event.target.classList.contains('selected')) {
-    // Ajoute la classe "highlighted" au survol du pays
     event.target.classList.add('highlighted');
   }
 });
 
 // Supprime la surbrillance lorsque la souris quitte la carte
 worldMap.addEventListener('mouseout', function (event) {
-  // Vérifie si l'élément survolé est un <path> et s'il n'est pas déjà sélectionné
   if (event.target.tagName === 'path' && !event.target.classList.contains('selected')) {
-    // Supprime la classe "highlighted" lorsque la souris quitte le pays
     event.target.classList.remove('highlighted');
   }
 });
 
 // Ajoute un gestionnaire d'événements au clic sur la carte
 worldMap.addEventListener('click', function (event) {
-  // Vérifier si le mode drapeau est activé
   const isFlagModeEnabled = flagModeCheckbox && flagModeCheckbox.checked;
   let selectedColor = selectedColorPicker.value;
 
@@ -44,20 +39,31 @@ worldMap.addEventListener('click', function (event) {
     const isoCode = path.id;
     const isSelected = path.classList.contains('selected');
 
-    // Vérifier si le chemin a un code de pays
     if (!path.dataset.countryCode) {
       console.warn('Path clicked has no country code:', path);
       return;
     }
 
-    if (isFlagModeEnabled) {
-      // En mode drapeau : appliquer le drapeau lorsqu'on clique sur un pays
-      const countryCode = path.dataset.countryCode.toLowerCase();
+    // Trouver l'élément li correspondant dans la liste
+    const countryLiElement = document.querySelector(`li.country input[value="${isoCode}"]`)?.closest('li.country');
 
-      // Sinon, appliquer le drapeau
+    if (isFlagModeEnabled) {
+      const countryCode = path.dataset.countryCode.toLowerCase();
       const flagUrl = `${flagBaseUrl}/${countryCode}.png`;
-      fillWithFlag(path, flagUrl, 'selected');
-      selectedCountries++;
+
+      // Utiliser la nouvelle fonction toggle
+      const flagAdded = toggleFlag(path, flagUrl, 'selected');
+
+      // Synchroniser avec la liste
+      if (countryLiElement) {
+        if (flagAdded) {
+          countryLiElement.classList.add('opacity-50');
+          selectedCountries++;
+        } else {
+          countryLiElement.classList.remove('opacity-50');
+          selectedCountries--;
+        }
+      }
 
       updateSelectedCountries();
     } else {
@@ -69,6 +75,13 @@ worldMap.addEventListener('click', function (event) {
           path.classList.remove('selected');
           path.removeAttribute('data-selected-color');
           path.style.fill = unfilledColorPicker.value;
+
+          // Synchroniser avec la liste
+          if (countryLiElement) {
+            countryLiElement.classList.remove('opacity-50');
+            const checkbox = countryLiElement.querySelector('input[type="checkbox"]');
+            if (checkbox) checkbox.checked = false;
+          }
 
           let countryElement = document.querySelector(`div[data-iso="${isoCode.toLowerCase()}"]`);
           if (countryElement) {
@@ -90,6 +103,13 @@ worldMap.addEventListener('click', function (event) {
         path.setAttribute('data-selected-color', selectedColor);
         path.classList.remove('highlighted');
 
+        // Synchroniser avec la liste
+        if (countryLiElement) {
+          countryLiElement.classList.add('opacity-50');
+          const checkbox = countryLiElement.querySelector('input[type="checkbox"]');
+          if (checkbox) checkbox.checked = true;
+        }
+
         let countryElement = document.querySelector(`div[data-iso="${isoCode.toLowerCase()}"]`);
         if (countryElement) {
           countryElement.querySelector('input[type="checkbox"]').checked = true;
@@ -106,12 +126,55 @@ worldMap.addEventListener('click', function (event) {
     const countryCode = flagId.replace('flag-img-', '');
     const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
     if (associatedPath) {
+      // Trouver l'élément li correspondant et synchroniser
+      const countryLiElement = document
+        .querySelector(`li.country input[value="${associatedPath.id}"]`)
+        ?.closest('li.country');
+      if (countryLiElement) {
+        countryLiElement.classList.remove('opacity-50');
+      }
+
       resetFill(associatedPath, 'selected');
       selectedCountries--;
       updateSelectedCountries();
     }
   }
 });
+
+// Fonction toggle pour les drapeaux (nouvelle fonction améliorée)
+function toggleFlag(path, flagUrl, action) {
+  if (!path || !path.dataset.countryCode) {
+    console.error('Path is undefined or missing country code');
+    return false;
+  }
+
+  const countryCode = path.dataset.countryCode.toLowerCase();
+  const imageId = `flag-img-${countryCode}`;
+
+  // Vérifier si le drapeau existe déjà
+  const existingFlag = document.getElementById(imageId);
+
+  if (existingFlag) {
+    // Le drapeau existe, le supprimer (mode OFF)
+    resetFill(path, action);
+    return false; // Indique que le drapeau a été supprimé
+  } else {
+    // Le drapeau n'existe pas, l'ajouter (mode ON)
+    fillWithFlag(path, flagUrl, action);
+    return true; // Indique que le drapeau a été ajouté
+  }
+}
+
+// Fonction pour vérifier si un pays a un drapeau
+function hasFlag(path) {
+  if (!path || !path.dataset.countryCode) {
+    return false;
+  }
+
+  const countryCode = path.dataset.countryCode.toLowerCase();
+  const imageId = `flag-img-${countryCode}`;
+  return document.getElementById(imageId) !== null;
+}
 
 oceanColorPicker.addEventListener('change', function () {
   let oceanColor = oceanColorPicker.value;
@@ -125,7 +188,7 @@ selectedColorPicker.addEventListener('change', function () {
   const selectedElements = document.querySelectorAll('.selected');
   selectedElements.forEach(function (element) {
     let actualColor = element.getAttribute('data-selected-color');
-    element.style.fill = actualColor; // Nouvelle couleur de remplissage
+    element.style.fill = actualColor;
   });
 });
 
@@ -133,7 +196,7 @@ unfilledColorPicker.addEventListener('change', function () {
   let unfilledColor = unfilledColorPicker.value;
   const nonSelectedElements = document.querySelectorAll('#worldMap path:not(.selected)');
   nonSelectedElements.forEach(function (element) {
-    element.style.fill = unfilledColor; // Nouvelle couleur de remplissage
+    element.style.fill = unfilledColor;
   });
 
   document.documentElement.style.setProperty('--non-selected-color', unfilledColor);
@@ -146,19 +209,42 @@ borderColorPicker.addEventListener('change', function () {
 
 countryLi.forEach(function (li) {
   li.addEventListener('click', function (event) {
-    event.preventDefault(); // Annule le comportement par défaut de l'événement
+    event.preventDefault();
     let isChecked = li.classList.contains('opacity-50');
-    if (isChecked) {
-      li.classList.remove('opacity-50');
-      selectedCountries--;
-    } else {
-      li.classList.add('opacity-50');
-      selectedCountries++;
-    }
     const input = this.querySelector('input[type="checkbox"]');
+
     if (input) {
       const value = input.value;
-      changeColor(value);
+      const path = document.getElementById(value);
+      const isFlagModeEnabled = flagModeCheckbox && flagModeCheckbox.checked;
+
+      if (isFlagModeEnabled) {
+        // En mode drapeau, utiliser toggleFlag pour gérer automatiquement l'ajout/suppression
+        const flagUrl = `${flagBaseUrl}/${value.toLowerCase()}.png`;
+        const flagAdded = toggleFlag(path, flagUrl, 'selected');
+
+        // Mettre à jour l'interface en fonction du résultat
+        if (flagAdded) {
+          // Drapeau ajouté
+          li.classList.add('opacity-50');
+          selectedCountries++;
+        } else {
+          // Drapeau supprimé
+          li.classList.remove('opacity-50');
+          selectedCountries--;
+        }
+      } else {
+        // Mode couleur normal
+        if (isChecked) {
+          li.classList.remove('opacity-50');
+          selectedCountries--;
+        } else {
+          li.classList.add('opacity-50');
+          selectedCountries++;
+        }
+        changeColor(value);
+      }
+
       updateSelectedCountries();
     }
   });
@@ -205,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function updateSelectedCountries() {
-  // Mettre à jour l'affichage en fonction de selectedCountries
   if (selectedCountries > 0) {
     document.getElementById('unselectAll').classList.remove('hidden');
     document.getElementById('unselectAll').classList.add('flex');
@@ -230,7 +315,6 @@ document.getElementById('unselectAll').addEventListener('click', function () {
   resetAll();
 });
 
-// Function to setup color picker functionality
 function setupColorPicker(prefix) {
   const picker = document.getElementById(`${prefix}ColorPicker`);
   const box = document.getElementById(`${prefix}ColorBox`);
@@ -242,7 +326,6 @@ function setupColorPicker(prefix) {
     text.value = color.toUpperCase();
     picker.value = color;
 
-    // Mise à jour des couleurs dans le SVG
     switch (prefix) {
       case 'ocean':
         document.documentElement.style.setProperty('--ocean-color', color);
@@ -276,7 +359,6 @@ function setupColorPicker(prefix) {
       picker.value = color;
       text.value = color.toUpperCase();
 
-      // Mise à jour des couleurs dans le SVG
       switch (prefix) {
         case 'ocean':
           document.documentElement.style.setProperty('--ocean-color', color);
@@ -312,9 +394,17 @@ function isValidColor(color) {
 }
 
 function resetAll() {
+  // Supprimer tous les drapeaux
+  const allFlagImages = document.querySelectorAll('image[id^="flag-img-"]');
+  const allFlagClips = document.querySelectorAll('clipPath[id^="flag-clip-"]');
+
+  allFlagImages.forEach((img) => img.remove());
+  allFlagClips.forEach((clip) => clip.remove());
+
+  // Réinitialiser les paths
   for (let i = 0; i < paths.length; i++) {
     paths[i].style.fill = unfilledColorPicker.value;
-    paths[i].classList.remove('selected');
+    paths[i].classList.remove('selected', 'unfilled', 'flag');
     paths[i].removeAttribute('data-selected-color');
   }
 }
@@ -327,14 +417,12 @@ setupColorPicker('border');
 
 unfilledFlagToggle.addEventListener('change', function () {
   if (!this.checked) {
-    // Remove flags for countries that are not selected
     const flaggedSelectedCountries = document.querySelectorAll('path[data-country-code]:not(.flag):not(.selected)');
 
     flaggedSelectedCountries.forEach((path) => {
       resetFill(path, 'unfilled');
     });
 
-    // Also remove flags for previously flagged countries
     const flagImages = document.querySelectorAll('image[id^="flag-img-"]');
     flagImages.forEach((image) => {
       const countryCode = image.id.replace('flag-img-', '');
@@ -345,7 +433,6 @@ unfilledFlagToggle.addEventListener('change', function () {
       }
     });
   } else {
-    // Apply flags to unselected countries
     const unselectedCountries = document.querySelectorAll('path[data-country-code]:not(.selected)');
 
     unselectedCountries.forEach((path) => {
@@ -356,8 +443,8 @@ unfilledFlagToggle.addEventListener('change', function () {
   }
 });
 
+// Fonction fillWithFlag améliorée (maintenant appelée par toggleFlag)
 function fillWithFlag(path, flagUrl, action) {
-  // Vérifier si le chemin existe
   if (!path) {
     console.error('Path is undefined or null');
     return;
@@ -373,7 +460,6 @@ function fillWithFlag(path, flagUrl, action) {
   const clipId = `flag-clip-${countryCode}`;
   const svg = document.querySelector('#worldMap');
 
-  // S'assurer que defs existe
   let defs = document.getElementById('pattern-defs');
   if (!defs) {
     defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -381,25 +467,20 @@ function fillWithFlag(path, flagUrl, action) {
     svg.appendChild(defs);
   }
 
-  // Supprimer TOUS les éléments de drapeau existants pour ce pays
+  // Nettoyer les éléments existants avant d'en créer de nouveaux
   const existingImages = document.querySelectorAll(`image[id^="flag-img-${countryCode}"]`);
   const existingClips = document.querySelectorAll(`clipPath[id^="flag-clip-${countryCode}"]`);
 
   existingImages.forEach((img) => img.remove());
   existingClips.forEach((clip) => clip.remove());
 
-  // Marquer tous les chemins avec ce code de pays comme sélectionnés
   const allCountryPaths = document.querySelectorAll(`path[data-country-code="${path.dataset.countryCode}"]`);
-
-  // Obtenir la boîte englobante pour positionner le drapeau
-  // Utiliser la boîte englobante du chemin cliqué spécifique
   const bbox = path.getBBox();
 
   // Créer un chemin de découpage
   const clipPath = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
   clipPath.setAttribute('id', clipId);
 
-  // Au lieu de cloner, nous utilisons le chemin d'origine comme référence
   const useElement = document.createElementNS('http://www.w3.org/2000/svg', 'use');
   useElement.setAttribute('href', `#${path.id}`);
   clipPath.appendChild(useElement);
@@ -417,31 +498,26 @@ function fillWithFlag(path, flagUrl, action) {
   image.setAttribute('clip-path', `url(#${clipId})`);
   image.setAttribute('data-country-code', countryCode.toUpperCase());
 
-  // Ajouter l'image au SVG
   svg.appendChild(image);
 
   // Mettre à jour tous les chemins associés à ce pays
   allCountryPaths.forEach((countryPath) => {
-    // Préserver la couleur sélectionnée si elle existe
     const selectedColor = countryPath.getAttribute('data-selected-color');
 
-    // Marquer comme ayant un drapeau
     if (!countryPath.classList.contains(action)) {
       countryPath.classList.add(action);
     }
 
-    // Si une couleur était sélectionnée, la stocker
     if (selectedColor) {
       countryPath.setAttribute('data-selected-color', selectedColor);
     }
   });
 
-  return image; // Renvoie l'image créée
+  return image;
 }
 
 // Fonction améliorée pour réinitialiser le remplissage
 function resetFill(path, action) {
-  // Vérification complète que le chemin est valide et a un code de pays
   if (!path || !path.dataset || !path.dataset.countryCode) {
     console.error('Invalid path or missing country code:', path);
     return;
@@ -449,7 +525,7 @@ function resetFill(path, action) {
 
   const countryCode = path.dataset.countryCode.toLowerCase();
 
-  // Supprimer TOUS les éléments de drapeau pour ce pays
+  // Supprimer tous les éléments de drapeau pour ce pays
   const existingImages = document.querySelectorAll(`image[id^="flag-img-${countryCode}"]`);
   const existingClips = document.querySelectorAll(`clipPath[id^="flag-clip-${countryCode}"]`);
 
