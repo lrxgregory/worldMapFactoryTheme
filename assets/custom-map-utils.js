@@ -279,3 +279,34 @@ export function updateMapStyles(mapData) {
   // Crée un objet JSON avec les données de mapData
   return mapData;
 }
+
+export function prepareMapDataForWebhook() {
+  const worldMap = document.getElementById('worldMap');
+  const paths = worldMap.querySelectorAll('path');
+
+  const mapData = {
+    oceanColor: document.getElementById('oceanColorPicker').value,
+    unfilledColor: document.getElementById('unfilledColorPicker').value,
+    selectedColor: document.getElementById('selectedColorPicker').value,
+    borderColor: document.getElementById('borderColorPicker').value,
+  };
+
+  paths.forEach((path) => {
+    const countryCode = path.getAttribute('data-country-code');
+    if (!countryCode) return;
+
+    const flagImg = worldMap.querySelector(`image[id="flag-img-${countryCode.toLowerCase()}"]`);
+    const isFlagged = flagImg ? true : false;
+
+    // Créer l'objet de base pour le pays
+    const countryData = {
+      color: path.getAttribute('data-selected-color') || document.getElementById('unfilledColorPicker').value,
+      flag: isFlagged,
+    };
+
+    mapData[countryCode] = countryData;
+  });
+
+  console.log('Données finales:', mapData);
+  return mapData;
+}
