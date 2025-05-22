@@ -289,6 +289,7 @@ export function prepareMapDataForWebhook() {
     unfilledColor: document.getElementById('unfilledColorPicker').value,
     selectedColor: document.getElementById('selectedColorPicker').value,
     borderColor: document.getElementById('borderColorPicker').value,
+    countries: {},
   };
 
   paths.forEach((path) => {
@@ -298,15 +299,11 @@ export function prepareMapDataForWebhook() {
     const flagImg = worldMap.querySelector(`image[id="flag-img-${countryCode.toLowerCase()}"]`);
     const isFlagged = flagImg ? true : false;
 
-    // Créer l'objet de base pour le pays
-    const countryData = {
+    mapData.countries[countryCode] = {
       color: path.getAttribute('data-selected-color') || document.getElementById('unfilledColorPicker').value,
       flag: isFlagged,
     };
-
-    mapData[countryCode] = countryData;
   });
 
-  console.log('Données finales:', mapData);
   return mapData;
 }

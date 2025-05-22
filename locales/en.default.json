@@ -534,4 +534,6 @@
   "selected_countries": "Selected countries",
   "borders": "Borders",
   "search_countries": "Search countries",
+  "unfilled_flag": "Fill unselected countries with their flag",
+  "filled_flag": "Fill selected countries with their flag"
 }

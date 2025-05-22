@@ -545,4 +545,6 @@
   "selected_countries": "Pays sélectionnés",
   "borders": "Frontières",
   "search_countries": "Rechercher des pays",
+  "unfilled_flag": "Remplir les pays non sélectionnés par leur drapeau",
+  "filled_flag": "Remplir les pays sélectionnés par leur drapeau"
 }
