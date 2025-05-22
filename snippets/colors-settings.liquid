@@ -38,11 +38,7 @@
       </div>
     </div>
 
-    {%
-      render 'checkbox-flag',
-      id: 'unfilledFlagToggle',
-      label: 'unfilled_flag' | t
-    %}
+    {% render 'checkbox-flag', id: 'unfilledFlagToggle', label_key: 'unfilled_flag' %}
 
     <!-- Unfilled Countries -->
     <div id="unfilledCountries" class="flex items-center justify-between py-2">
@@ -71,11 +67,7 @@
       </div>
     </div>
 
-    {%
-      render 'checkbox-flag',
-      id: 'filledFlagToggle',
-      label: 'filled_flag' | t
-    %}
+    {% render 'checkbox-flag', id: 'flagBackgroundToggle', label_key: 'filled_flag' %}
     <!-- Selected Countries -->
     <div id="selectedCountries" class="flex items-center justify-between py-2">
       <label class="text-gray-800 min-w-[140px] mr-2">{{ 'selected_countries' | t }}</label>

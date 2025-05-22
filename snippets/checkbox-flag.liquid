@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between py-2">
   <label class="text-gray-700 font-medium min-w-[140px] mr-2 cursor-pointer">
-    {{ label | default: 'Display flags' }}
+    {{ label_key | t | default: 'Display flags' }}
   </label>
   <label class="relative inline-flex items-center cursor-pointer">
     <input
