@@ -161,6 +161,7 @@ function toggleFlag(path, flagUrl, action) {
   } else {
     // Le drapeau n'existe pas, l'ajouter (mode ON)
     fillWithFlag(path, flagUrl, action);
+    path.classList.remove('highlighted');
     return true; // Indique que le drapeau a été ajouté
   }
 }
@@ -394,18 +395,38 @@ function isValidColor(color) {
 }
 
 function resetAll() {
-  // Supprimer tous les drapeaux
+  // Supprimer seulement les drapeaux des pays sélectionnés
   const allFlagImages = document.querySelectorAll('image[id^="flag-img-"]');
   const allFlagClips = document.querySelectorAll('clipPath[id^="flag-clip-"]');
 
-  allFlagImages.forEach((img) => img.remove());
-  allFlagClips.forEach((clip) => clip.remove());
+  allFlagImages.forEach((img) => {
+    const countryCode = img.id.replace('flag-img-', '');
+    const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
 
-  // Réinitialiser les paths
+    // Vérifier si le pays associé a la classe 'selected'
+    if (associatedPath && associatedPath.classList.contains('selected')) {
+      img.remove();
+    }
+  });
+
+  allFlagClips.forEach((clip) => {
+    const countryCode = clip.id.replace('flag-clip-', '');
+    const associatedPath = document.querySelector(`path[data-country-code="${countryCode.toUpperCase()}"]`);
+
+    // Vérifier si le pays associé a la classe 'selected'
+    if (associatedPath && associatedPath.classList.contains('selected')) {
+      clip.remove();
+    }
+  });
+
+  // Réinitialiser seulement les paths sélectionnés
   for (let i = 0; i < paths.length; i++) {
-    paths[i].style.fill = unfilledColorPicker.value;
-    paths[i].classList.remove('selected', 'unfilled', 'flag');
-    paths[i].removeAttribute('data-selected-color');
+    const path = paths[i];
+    if (path.classList.contains('selected')) {
+      path.style.fill = unfilledColorPicker.value;
+      path.classList.remove('selected', 'unfilled', 'flag', 'highlighted');
+      path.removeAttribute('data-selected-color');
+    }
   }
 }
 
