@@ -1,0 +1,193 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rules for Yuzer E-commerce Integration
+
+## Base Configuration
+
+```json
+{
+  "api": {
+    "baseUrl": "https://dev.yuzer.com/ext-api/v1",
+    "auth": {
+      "type": "JWT",
+      "token": "YOUR_ACCESS_TOKEN"
+    }
+  }
+}
+```
+
+## API Endpoints
+
+### Create a Basket
+
+```typescript
+interface BasketRequest {
+  customerId?: string; // Optional if customer is not yet registered
+  items: Array<{
+    itemId: string; // Format: "<catalog-prefix>-<itemId>" or "<itemId>" for main catalog
+    quantity: number;
+    price?: number; // Optional if prices are managed by Yuzer
+  }>;
+  payment?: {
+    amount: number;
+    method: string; // Mapped payment method code
+    transactionId?: string;
+  };
+}
+
+interface BasketResponse {
+  basketId: string;
+  basketYear: number;
+}
+
+// Example call
+// POST /baskets
+// Body: BasketRequest
+// Returns: BasketResponse
+```
+
+### Associate Customer to Basket
+
+```typescript
+// POST /baskets/{basketYear}/{basketId}/customer
+// Body: {
+//   customerId: string; // Yuzer customer ID
+// }
+```
+
+### Create Payment
+
+```typescript
+// POST /payments/basket/{basketYear}/{basketId}
+// Body: {
+//   amount: number;
+//   method: string; // Mapped payment method code
+//   transactionId?: string;
+// }
+```
+
+## Webhook Endpoints
+
+### Setup Configuration (Mandatory)
+
+```typescript
+// POST /integrations/yuzer/setup
+interface SetupRequest {
+  token: string; // Yuzer access token
+  entityId: string; // UUID
+  origin: string; // supplierEntityId
+  baseUrl: string; // Yuzer instance URL
+}
+
+interface SetupResponse {
+  implementedEndpoints: {
+    postProduct: boolean;
+    postStock: boolean;
+    postOrderDeliveryNote: boolean;
+    postOrderInvoice: boolean;
+    getPaymentMethodsAvailable: boolean;
+  };
+}
+```
+
+### Get Payment Methods (Mandatory)
+
+```typescript
+// GET /integrations/yuzer/payment-methods/available
+interface PaymentMethod {
+  code: string;
+  title: string;
+}
+// Returns: Array<PaymentMethod>
+```
+
+### Sync Products (Optional)
+
+```typescript
+// POST /integrations/yuzer/products
+// Body: Array<ItemDTO>
+```
+
+### Sync Stock (Optional)
+
+```typescript
+// POST /integrations/yuzer/stock
+// Body: Array<StockUpdate>
+```
+
+### Delivery Notes (Optional)
+
+```typescript
+// POST /integrations/yuzer/order/{ecommerceOrderId}/delivery-note
+// Body: DocumentInfo
+```
+
+### Invoices (Optional)
+
+```typescript
+// POST /integrations/yuzer/order/{ecommerceOrderId}/invoice
+// Body: DocumentInfo
+```
+
+## Type Definitions
+
+```typescript
+interface ItemDTO {
+  itemId: string;
+  variantParentId?: string;
+  label: string;
+  description?: string;
+  prices: {
+    retailExVat: number;
+    vat: number;
+    retailIncVat: number;
+  };
+  propertyValues?: {
+    colors?: string[];
+    sizes?: string[];
+    // Other properties as defined in documentation
+  };
+}
+
+interface StockUpdate {
+  itemId: string;
+  state: 'NEW' | 'USED';
+  quantity: number;
+}
+
+interface DocumentInfo {
+  documentUrl: string;
+  documentId: string;
+  creationTimestamp: number; // epoch milliseconds
+  sendEmail: boolean;
+}
+```
+
+## Error Handling
+
+```typescript
+interface YuzerError {
+  error: {
+    code: string;
+    message: string;
+    details?: string;
+  };
+  status: number;
+}
+
+// All API calls may return this error format
+```
+
+## Example Workflow
+
+1. Configure webhook endpoints in your e-commerce system
+2. Call `/setup` to establish connection
+3. Implement product/stock sync if needed
+4. When order is placed:
+   - Create basket in Yuzer
+   - Associate customer if not done during creation
+   - Create payment when received
+5. Handle incoming delivery notes and invoices

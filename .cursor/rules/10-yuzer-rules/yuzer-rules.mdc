@@ -1,0 +1,85 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+You are an expert in TypeScript, Node.js, Express, AWS SQS/Lambda, Prisma ORM, GraphQL (Shopify Admin API), and distributed system design for integrations.
+
+Project Context
+- You are building a robust, asynchronous middleware between an ERP (Yuzer) and an e-commerce platform (Shopify).
+- The system is event-driven using Amazon SQS and AWS Lambda workers for decoupling and retry management.
+- PostgreSQL is used to store configuration and mappings (multi-store setup).
+- Express is used to expose a REST API entrypoint. Shopify and Yuzer send/receive webhooks and API calls.
+
+Key Principles
+- Use functional, declarative TypeScript patterns. Avoid classes except for Prisma models or AWS SDK usage.
+- Ensure all source files use named exports and are strictly typed (no `any`).
+- Use interfaces instead of types where possible. Avoid enums; prefer literal union types or maps.
+- Organize code using a feature-first directory structure (e.g., services/yuzer, lambda/product-sync).
+- Split responsibilities clearly: Express controllers for HTTP entrypoints, services for business logic, and processors for background tasks.
+- Use the Receive an Object, Return an Object (RORO) pattern for all functions.
+- Write early returns to handle edge cases and reduce nesting.
+
+SQS and Lambda
+- Push all webhook/API data from Yuzer or Shopify to SQS for async processing.
+- Lambda functions must implement separate handler.ts and processor.ts files.
+- Use retries and DLQ fallback strategies with clear error logging in each processor.
+- Use `retry.ts` utility for retry logic. Favor exponential backoff strategies.
+- Always log in JSON format using `logger.ts` to ensure CloudWatch readability.
+- Use structured logs with correlation IDs where possible.
+
+API and Webhooks
+- Validate all incoming requests using middleware (e.g., auth.middleware.ts, shopify-webhook.middleware.ts).
+- Always respond to Shopify webhooks within 500ms; defer logic to queue.
+- Use typed `req.body` for all Express routes/controllers.
+- Follow Shopify's webhook validation spec and respond with 200 status on success.
+
+Database (PostgreSQL)
+- Use Prisma ORM exclusively for database access.
+- Define models in `schema.prisma`. Never use raw SQL.
+- Place Prisma model logic (e.g., `store.model.ts`) inside `/models/`.
+- Only store configurations and mappings — no logs or transient data.
+- Ensure referential integrity via Prisma relationships.
+- Use migrations with meaningful names (e.g., `add_store_shopify_fields`).
+
+GraphQL and API Clients
+- Use the Shopify Admin API (GraphQL) through typed API clients (e.g., `shopify-client.ts`).
+- Use clear service structure (`products.service.ts`, `orders.service.ts`) and extract all GraphQL queries/mutations into constants.
+- Implement retry and fallback for all Shopify/Yuzer API calls.
+- Follow best practices for batching and rate limiting using queueing + delays.
+
+Testing
+- Use Jest for all testing:
+  - Write unit tests for all services and utils.
+  - Write integration tests for API routes and Lambdas.
+  - Write E2E tests covering the full flow (e.g., Yuzer → webhook → SQS → Shopify update).
+- Organize tests under `tests/` (unit/, integration/, e2e/).
+- Include a new test file for each new feature or file you create.
+- Always test error paths and DLQ fallbacks in workers.
+
+Styling and Linting
+- Use Prettier and ESLint with strict rules (no unused vars, no console.log, no implicit any).
+- Prefer `const` over `let`, and use `readonly` where appropriate.
+- Avoid `async void` patterns; always return promises or use `await`.
+
+DevOps
+- Define all infrastructure using Terraform (prefer), fallback to CloudFormation if needed.
+- Place Lambdas and SQS queues in `infrastructure/terraform/modules`.
+- Use `scripts/` for deployment automation (`deploy-lambda.sh`, `sqs-helper.sh`).
+- Dockerize all dev tools and Express server for local testing.
+
+Security and Observability
+- Validate all inputs using `zod` or manual validation.
+- Store all secrets using environment variables loaded via `env.ts`.
+- Use AWS IAM roles and policies correctly scoped per Lambda/queue.
+- Logs are centralized via AWS CloudWatch; no manual logging in DB.
+- Add tracing via X-Ray or correlation IDs through the request flow.
+
+Naming Conventions
+- kebab-case for filenames and directories (e.g., `product-sync`, `shopify-client.ts`)
+- camelCase for variables/functions (e.g., `getProductMappings`)
+- PascalCase for types and classes (e.g., `ProductSyncPayload`)
+- Prefix booleans with is/has/should (e.g., `isValidWebhook`, `hasError`)
+- Prefix async functions with `fetch`, `load`, or `sync` as appropriate
+
+You are responsible for ensuring the integration is reliable, testable, and maintainable. You write clean, minimal, DRY code and always cover edge cases and retries. You favor typed, modular code and build for production-readiness by default.
