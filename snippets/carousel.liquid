@@ -1,0 +1,188 @@
+<div class="product-display relative mx-auto">
+  <!-- Carousel contenant la map et les images -->
+  <div id="carousel-container" class="carousel-container relative overflow-hidden">
+    <div class="carousel-track flex transition-transform duration-500" data-carousel-track>
+      <!-- Slide de la carte -->
+      <div class="carousel-slide my-auto">
+        <div id="map-container" class="map-container flex items-center justify-center w-full">
+          {% render 'map' %}
+        </div>
+      </div>
+
+      <!-- Slides des images -->
+      {% for image in product.images %}
+        <div id="slider-images" class="flex-shrink-0 w-full carousel-image-container">
+          <img
+            class="object-contain object-center w-full h-full"
+            src="{{ image.src | img_url: 'large' }}"
+            alt="{{ product.title | escape }} - {{ image.alt | default: product.title | escape }}"
+            data-carousel-image="{{ image.src | img_url: 'large' }}"
+            width="100%"
+            height="100%"
+          >
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Boutons de navigation -->
+    <button
+      id="carousel-prev"
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 px-1 py-1 rounded"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-4"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+    <button
+      id="carousel-next"
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 px-1 py-1 rounded"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-4"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Grille pour desktop -->
+  <div id="grid-container" class="mt-2">
+    {% for image in product.images %}
+      <img
+        class="object-cover object-center w-full h-full border"
+        src="{{ image.src | img_url: 'large' }}"
+        alt="{{ product.title | escape }} - {{ image.alt | default: product.title | escape }}"
+        data-carousel-image="{{ image.src | img_url: 'large' }}"
+        width="100%"
+        height="100%"
+      >
+    {% endfor %}
+  </div>
+
+  <!-- Indicateurs -->
+  <div id="carousel-indicators" class="flex justify-center items-center gap-8 py-4 w-full">
+    {% for i in (0..product.images.size) %}
+      <button
+        class="w-2 h-2 rounded-full transition-colors {% if forloop.first %}bg-gray-500{% else %}bg-gray-300 hover:bg-gray-400{% endif %}"
+        data-slide-index="{{ i }}"
+        type="button"
+      ></button>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    max-height: 500px;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-image-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-indicators button {
+    cursor: pointer;
+  }
+
+  #slider-images img {
+    max-height: 480px;
+    width: auto;
+    margin: 0 auto;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('[data-carousel-track]');
+    const slides = Array.from(track.children);
+    const indicators = document.querySelectorAll('#carousel-indicators button');
+    const prevButton = document.getElementById('carousel-prev');
+    const nextButton = document.getElementById('carousel-next');
+    const totalSlides = slides.length;
+
+    let currentSlideIndex = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // Mise à jour de la position du carousel
+    const updateCarousel = () => {
+      const offset = -currentSlideIndex * 100;
+      track.style.transform = `translateX(${offset}%)`;
+
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('bg-gray-500', index === currentSlideIndex);
+        indicator.classList.toggle('bg-gray-300', index !== currentSlideIndex);
+      });
+    };
+
+    // Gestion des clics sur Précédent
+    prevButton.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    });
+
+    // Gestion des clics sur Suivant
+    nextButton.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+      updateCarousel();
+    });
+
+    // Aller à une slide spécifique
+    const goToSlide = (index) => {
+      currentSlideIndex = (index + totalSlides) % totalSlides; // Assure un cycle infini
+      updateCarousel();
+    };
+
+    // Gérer le swipe gauche/droite
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      if (touchEndX < touchStartX - 50) {
+        goToSlide(currentSlideIndex + 1); // Swipe gauche
+      } else if (touchEndX > touchStartX + 50) {
+        goToSlide(currentSlideIndex - 1); // Swipe droite
+      }
+    });
+
+    // Gérer les indicateurs
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Initialisation du carousel
+    updateCarousel();
+  });
+</script>
