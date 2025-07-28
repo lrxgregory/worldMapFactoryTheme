@@ -80,6 +80,16 @@
     "collapsible_content_title": "Contenu réductible",
     "complementary_products": "Produits complémentaires"
   },
+  "colors": "Couleurs",
+  "ocean_color": "Couleur de l'océan",
+  "unfilled_flag": "Drapeau non rempli",
+  "unfilled_countries": "Pays non remplis",
+  "filled_flag": "Drapeau rempli",
+  "selected_countries": "Pays sélectionnés",
+  "borders": "Bordures",
+  "countries": "Pays",
+  "search_countries": "Rechercher des pays",
+  "unselect_all": "Tout désélectionner",
   "blogs": {
     "article": {
       "blog": "Blog",
